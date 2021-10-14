@@ -8,18 +8,130 @@
     <style>
         canvas {
             outline: 1px solid black;
+            margin: 0;
         }
     </style>
 </head>
 <body>
     <canvas id="map"></canvas>
+    <textarea id="output"></textarea>
+    <button onclick="generateOutput()">Generate</button>
+    <button onclick="clearMap()">Clear</button>
     <script>
-        let canvas = document.getElementById("map");
-        let width = canvas.width = 500;
-        let height = canvas.height = 500;
-        let ctx = canvas.getContext("2d");
+        let canvas, ctx, WIDTH, HEIGHT, output;
 
+        let COLS = ROWS = 20;
 
+        let map = [];
+
+        function main () {
+            canvas = document.getElementById("map");
+            WIDTH = canvas.width = 590;
+            HEIGHT = canvas.height = 590;
+            ctx = canvas.getContext("2d");
+            
+            output = document.getElementById("output");
+            output.rows = 30;
+            output.cols = 40;
+
+            populateMap(map);
+            createGrid(ctx);
+
+            document.addEventListener("click", onpress);
+
+            run();
+        }
+
+        function createGrid (ctx) {
+            ctx.strokeStyle = "#aaa"
+            ctx.beginPath();
+            for (let i = 1; i < COLS; ++i) {
+                ctx.moveTo(i*WIDTH/COLS, 0);
+                ctx.lineTo(i*WIDTH/COLS, HEIGHT);
+            }
+
+            for (let i = 1; i < ROWS; ++i) {
+                ctx.moveTo(0, i * HEIGHT/ROWS);
+                ctx.lineTo(WIDTH, i * HEIGHT/ROWS);
+            }
+            ctx.stroke();
+        }
+
+        function run () {
+            let loop = function () {
+                draw();
+                window.requestAnimationFrame(loop);
+            }
+            window.requestAnimationFrame(loop);
+        }
+
+        function populateMap (map) {
+            for (let i = 0; i < ROWS; ++i) {
+                map.push([]);
+                for (let j = 0; j < COLS; ++j) {
+                    map[i].push(0);
+                }
+            }
+        }
+
+        function clearMap () {
+            for (let i = 0; i < ROWS; ++i) {
+                for (let j = 0; j < COLS; ++j) {
+                    map[i][j] = 0;
+                }
+            }
+        }
+
+        function generateOutput () {
+            let txt = "";
+
+            for (let i = 0; i < ROWS; ++i) {
+                for (let j = 0; j < COLS; ++j) {
+                    if (map[i][j]) {
+                        txt += "1";
+                    } else {
+                        txt += "0";
+                    }
+                }
+            }
+
+            output.innerHTML = txt;
+        }
+
+        function onpress (evt) {
+            console.log(evt.target)
+            if (evt.target != canvas) return;
+
+            let x = evt.clientX - evt.target.offsetLeft;
+            let y = evt.clientY - evt.target.offsetTop;
+
+            console.log(x, y);
+
+            let COL_WIDTH = WIDTH/COLS, ROW_HEIGHT = HEIGHT/ROWS;
+
+            let gridX = Math.floor(x/COL_WIDTH), gridY = Math.floor(y/ROW_HEIGHT);
+            if (!map[gridY][gridX]) {
+                map[gridY][gridX] = 1;
+            } else {
+                map[gridY][gridX] = 0;
+            }
+        }
+
+        function draw () {
+            for (let i = 0; i < ROWS; ++i) {
+                for (let j = 0; j < COLS; ++j) {
+                    if (map[i][j]) {
+                        ctx.fillStyle = "cornflowerblue";
+                        ctx.fillRect(j*WIDTH/COLS+1, i*HEIGHT/ROWS+1, WIDTH/COLS-2, HEIGHT/ROWS-2);
+                    } else {
+                        ctx.fillStyle = "white";
+                        ctx.fillRect(j*WIDTH/COLS+1, i*HEIGHT/ROWS+1, WIDTH/COLS-2, HEIGHT/ROWS-2);
+                    }
+                }
+            }
+        }
+
+        main();
     </script>
 </body>
 </html>
