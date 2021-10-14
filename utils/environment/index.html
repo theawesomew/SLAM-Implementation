@@ -17,6 +17,7 @@
     <textarea id="output"></textarea>
     <button onclick="generateOutput()">Generate</button>
     <button onclick="clearMap()">Clear</button>
+    <input type="range" min="2" max="80" id="dim" onchange="rescale()"/>
     <script>
         let canvas, ctx, WIDTH, HEIGHT, output;
 
@@ -96,6 +97,15 @@
             }
 
             output.innerHTML = txt;
+        }
+
+        function rescale () {
+            let value = document.getElementById("dim").value;
+
+            COLS = ROWS = parseInt(value);
+
+            createGrid(ctx);
+            clearMap();
         }
 
         function onpress (evt) {
