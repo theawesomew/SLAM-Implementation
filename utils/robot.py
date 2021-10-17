@@ -5,7 +5,7 @@ ENA = 7
 IN1 = 11
 IN2 = 12
 
-# control pins usef for the right motor
+# control pins used for the right motor
 ENB = 13
 IN3 = 15
 IN4 = 16
