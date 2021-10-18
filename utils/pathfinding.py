@@ -11,9 +11,9 @@ def aStarPathfinding (m):
     sideLength = len(m)
 
     startingNode = -1
-    for y in len(m):
-        for x in len(m[y]):
+    for y in range(len(m)):
+        for x in range(len(m[y])):
             if m[y][x] == 2:
                 startingNode = sideLength * y + x
     
-    openSet.append(startingNode)
+    openSet.append(startingNode)    
