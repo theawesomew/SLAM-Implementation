@@ -26,58 +26,58 @@ class Robot:
 
     h = l.gpiochip_open(0)
 
-    l.gpio_claim_output(h, ENA)
-    l.gpio_claim_output(h, IN1)
-    l.gpio_claim_output(h, IN2)
-    l.gpio_claim_output(h, ENB)
-    l.gpio_claim_output(h, IN3)
-    l.gpio_claim_output(h, IN4)
-
     def __init__ (self, x, y, orientation):
         self.x = x
         self.y = y
         self.orientation = orientation
+
+        l.gpio_claim_output(self.h, ENA)
+        l.gpio_claim_output(self.h, IN1)
+        l.gpio_claim_output(self.h, IN2)
+        l.gpio_claim_output(self.h, ENB)
+        l.gpio_claim_output(self.h, IN3)
+        l.gpio_claim_output(self.h, IN4)
     
     # use a duty cycle of <= 90%
     def forward(self, power: float):
         assert (power <= 1 and power >= 0)
-        l.tx_pwm(h, ENA, FREQ, power * 90)
-        l.gpio_write(h, IN1, 1)
-        l.gpio_write(h, IN2, 0)
-        l.tx_pwm(h, ENB, FREQ, power * 90)
-        l.gpio_write(h, IN3, 0)
-        l.gpio_write(h, IN4, 1)
+        l.tx_pwm(self.h, ENA, FREQ, power * 90)
+        l.gpio_write(self.h, IN1, 1)
+        l.gpio_write(self.h, IN2, 0)
+        l.tx_pwm(self.h, ENB, FREQ, power * 90)
+        l.gpio_write(self.h, IN3, 0)
+        l.gpio_write(self.h, IN4, 1)
     
     def reverse(self, power: float):
         assert (power <= 1 and power >= 0)
-        l.tx_pwm(h, ENA, FREQ, power * 90)
-        l.gpio_write(h, IN1, 0)
-        l.gpio_write(h, IN2, 1)
-        l.tx_pwm(h, ENB, FREQ, power * 90)
-        l.gpio_write(h, IN3, 1)
-        l.gpio_write(h, IN4, 0)
+        l.tx_pwm(self.h, ENA, FREQ, power * 90)
+        l.gpio_write(self.h, IN1, 0)
+        l.gpio_write(self.h, IN2, 1)
+        l.tx_pwm(self.h, ENB, FREQ, power * 90)
+        l.gpio_write(self.h, IN3, 1)
+        l.gpio_write(self.h, IN4, 0)
     
     def turn (self, isClockwise: bool):
         if isClockwise:
-            l.tx_pwm(h, ENA, FREQ, 45)
-            l.gpio_write(h, IN1, 0)
-            l.gpio_write(h, IN2, 1)
-            l.tx_pwm(h, ENB, FREQ, 45)
-            l.gpio_write(h, IN3, 0)
-            l.gpio_write(h, IN4, 1)
+            l.tx_pwm(self.h, ENA, FREQ, 45)
+            l.gpio_write(self.h, IN1, 0)
+            l.gpio_write(self.h, IN2, 1)
+            l.tx_pwm(self.h, ENB, FREQ, 45)
+            l.gpio_write(self.h, IN3, 0)
+            l.gpio_write(self.h, IN4, 1)
         else:
-            l.tx_pwm(h, ENA, FREQ, 45)
-            l.gpio_write(h, IN1, 1)
-            l.gpio_write(h, IN2, 0)
-            l.tx_pwm(h, ENB, FREQ, 45)
-            l.gpio_write(h, IN3, 1)
-            l.gpio_write(h, IN4, 0)
+            l.tx_pwm(self.h, ENA, FREQ, 45)
+            l.gpio_write(self.h, IN1, 1)
+            l.gpio_write(self.h, IN2, 0)
+            l.tx_pwm(self.h, ENB, FREQ, 45)
+            l.gpio_write(self.h, IN3, 1)
+            l.gpio_write(self.h, IN4, 0)
     
     def stop (self):
-        l.gpio_write(h, IN1, 0)
-        l.gpio_write(h, IN2, 0)
-        l.gpio_write(h, IN3, 0)
-        l.gpio_write(h, IN4, 0)
+        l.gpio_write(self.h, IN1, 0)
+        l.gpio_write(self.h, IN2, 0)
+        l.gpio_write(self.h, IN3, 0)
+        l.gpio_write(self.h, IN4, 0)
 
     def follow (self, programString):
         spd = 0.01
