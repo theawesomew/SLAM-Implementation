@@ -1,5 +1,10 @@
 from math import sqrt
 
+class Node:
+
+    def __init__ (self):
+        self.f = 0
+
 def aStarPathfinding (m):
     openSet = []
     closedSet = []
