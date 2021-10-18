@@ -11,7 +11,7 @@ FREQ = 10000
 
 try:
     while True:
-        l.tx_pwm(h, 17, FREQ, 90)
+        #l.tx_pwm(h, 17, FREQ, 90)
         l.gpio_write(h, 18, 1)
         l.gpio_write(h, 27, 0)
 
@@ -22,7 +22,7 @@ try:
 
         time.sleep(1)
 
-        l.tx_pwm(h, 17, FREQ, 90)
+        #l.tx_pwm(h, 17, FREQ, 90)
         l.gpio_write(h, 18, 0)
         l.gpio_write(h, 27, 1)
 
