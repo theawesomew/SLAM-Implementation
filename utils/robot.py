@@ -11,14 +11,14 @@ orientations = {
 
 
 # control pins used for the left motor
-ENA = 7
-IN1 = 11
-IN2 = 12
+ENA = 17
+IN1 = 18
+IN2 = 27
 
 # control pins used for the right motor
-ENB = 13
-IN3 = 15
-IN4 = 16
+ENB = 22
+IN3 = 23
+IN4 = 24
 
 FREQ = 10000
 
