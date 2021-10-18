@@ -14,4 +14,10 @@ def parseMapData (str):
     
     return MAP
 
-print(len(parseMapData(MAP_STRING)[0]))
+def placeTarget (m, x, y):
+    if x >= len(m) or y >= len(m): return
+    m[y][x] = 2
+
+def placeRobot (m, x, y):
+    if x >= len(m) or y >= len(m): return
+    m[y][x] = 3 
