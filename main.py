@@ -2,7 +2,7 @@ from utils.robot import *
 import time
 
 
-robot = Robot(10, 10)
+robot = Robot(10, 10, 0)
 
 while True:
     robot.forward(0.5)
