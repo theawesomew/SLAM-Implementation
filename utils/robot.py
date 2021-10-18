@@ -93,8 +93,11 @@ class Robot:
                 self.orientation += rotation
                 
             j = 1
-            while programString[i] == programString[i+j] and i+j < len(programString):
-                j += 1
+            while programString[i] == programString[i+j]:
+                if i+j < len(programString):
+                    j += 1
+                else:
+                    break
             self.forward(1)
             time.sleep(j)
             i += j
