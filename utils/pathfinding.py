@@ -81,3 +81,22 @@ def aStarPathfinding (m):
 
             openSet.append(child)
 
+def generateFollowString (path):
+    result = ""
+
+    for i in range(1,len(path)):
+        currentX, prevX, = path[i][0], path[i-1][0]
+        currentY, prevY, = path[i][1], path[i-1][1]
+
+        if prevX - currentX == -1:
+            result += "L"
+        elif prevX - currentX == 1:
+            result += "R"
+
+        if prevY - currentY == -1:
+            result += "F"
+        elif prevX - currentX == 1:
+            result += "B"
+
+    return result
+
