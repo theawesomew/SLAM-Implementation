@@ -1,9 +1,14 @@
 from utils.robot import *
+from utils.mapping import *
+from utils.pathfinding import *
+from utils.vision import *
 import time
 
 
 robot = Robot(10, 10, 0)
+vision = Vision()
 
 while True:
-    robot.forward(0.5)
-    time.sleep(1)
+    print(vision.getData())
+    
+    
