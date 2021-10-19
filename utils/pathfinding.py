@@ -1,5 +1,7 @@
 from math import sqrt
 
+# create a new node class to store information needed for
+# the A* pathfinding algorithm to function
 class Node:
 
     def __init__ (self, parent=None, position=None):
@@ -12,6 +14,13 @@ class Node:
 
     def __eq__ (self, other):
         return self.position == other.position
+
+matrix = [
+    [1, 2, 0, 1],
+    [1, 0, 0, 0],
+    [1, 0, 1, 0],
+    [1, 0, 1, 3]
+]
 
 def aStarPathfinding (m):
     openSet = []
@@ -52,7 +61,7 @@ def aStarPathfinding (m):
             return path[::-1]
 
         children = []
-        for newPosition in [(0, -1), (0, 1), (-1, 0), (1, 0), (-1, -1), (-1, 1), (1, -1), (1, 1)]:
+        for newPosition in [(0, -1), (0, 1), (-1, 0), (1, 0)]:
             nodePosition = [currentNode.position[0] + newPosition[0], currentNode.position[1] + newPosition[1]]
 
             if nodePosition[0] > len(m) - 1 or nodePosition[0] < 0 or nodePosition[1] > len(m[len(m)-1])-1 or nodePosition[1] < 0:
@@ -89,14 +98,20 @@ def generateFollowString (path):
         currentY, prevY, = path[i][1], path[i-1][1]
 
         if prevX - currentX == -1:
-            result += "L"
-        elif prevX - currentX == 1:
             result += "R"
+        elif prevX - currentX == 1:
+            result += "L"
+        else:
+            result += ""
 
         if prevY - currentY == -1:
-            result += "F"
-        elif prevX - currentX == 1:
             result += "B"
+        elif prevX - currentX == 1:
+            result += "F"
+        else:
+            result += ""
 
     return result
 
+print(aStarPathfinding(matrix))
+print(generateFollowString(aStarPathfinding(matrix)))
