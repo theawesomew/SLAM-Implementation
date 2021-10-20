@@ -1,4 +1,5 @@
 from math import sqrt
+import time
 
 # create a new node class to store information needed for
 # the A* pathfinding algorithm to function
@@ -23,6 +24,13 @@ class Node:
 # This relationship can be defined mathematically as f(n) = g(n) + h(n)
 # where g(n) is the "cost" of making it to this node & h(n) is the heuristic function which
 # uses the pythagorean theorem a**2 + b**2 = c**2 to estimate the future cost of that node
+
+matrix = [[2, 0, 0, 0, 0],
+          [0, 0, 1, 1, 0],
+          [0, 0, 1, 1, 3],
+          [0, 0, 0, 1, 0],
+          [0, 0, 0, 1, 3]]
+
 def aStarPathfinding (m):
     openSet = []
     closedSet = []
@@ -65,13 +73,16 @@ def aStarPathfinding (m):
         for newPosition in [(0, -1), (0, 1), (-1, 0), (1, 0)]:
             nodePosition = [currentNode.position[0] + newPosition[0], currentNode.position[1] + newPosition[1]]
 
-            if nodePosition[0] > len(m) - 1 or nodePosition[0] < 0 or nodePosition[1] > len(m[len(m)-1])-1 or nodePosition[1] < 0:
+            if nodePosition[0] > len(m) - 1 or nodePosition[0] < 0 or nodePosition[1] > len(m) - 1 or nodePosition[1] < 0:
                 continue
 
             if m[nodePosition[1]][nodePosition[0]] != 0 and m[nodePosition[1]][nodePosition[0]] != 3:
                 continue
 
             newNode = Node(currentNode, nodePosition)
+
+            if newNode in closedSet:
+                continue
             
             children.append(newNode)
 
@@ -82,7 +93,7 @@ def aStarPathfinding (m):
                     continue
 
             child.g = currentNode.g + 1
-            child.h = (child.position[0]-endingNode.position[0])**2 + (child.position[1]-endingNode.position[1])**2
+            child.h = sqrt((child.position[0]-endingNode.position[0])**2 + (child.position[1]-endingNode.position[1])**2)
             child.f = child.g + child.h
 
             for openNode in openSet:
@@ -115,3 +126,5 @@ def generateFollowString (path):
             result += ""
 
     return result
+
+print(aStarPathfinding(matrix))
