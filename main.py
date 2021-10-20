@@ -5,7 +5,7 @@ from utils.vision import *
 import time
 
 
-robot = Robot(10, 10, 0)
+robot = Robot(0, 0, 0)
 vision = Vision()
 
 while True:
