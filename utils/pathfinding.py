@@ -15,13 +15,6 @@ class Node:
     def __eq__ (self, other):
         return self.position == other.position
 
-matrix = [
-    [1, 2, 0, 1],
-    [1, 0, 0, 0],
-    [1, 0, 1, 0],
-    [1, 0, 1, 3]
-]
-
 def aStarPathfinding (m):
     openSet = []
     closedSet = []
@@ -112,6 +105,3 @@ def generateFollowString (path):
             result += ""
 
     return result
-
-print(aStarPathfinding(matrix))
-print(generateFollowString(aStarPathfinding(matrix)))
