@@ -14,6 +14,5 @@ placeRobot(MAP_MATRIX, robot.x, robot.y)
 
 placeTarget(MAP_MATRIX, 0, 0)
 
-while True:
-    robot.follow("FLFRFFF")
-    robot.stop()
+robot.follow("FFFRRR")
+robot.stop()
