@@ -68,17 +68,17 @@ class Robot:
     # The boolean variable specifies if the robot is turning clockwise or counter-clockwise
     def turn (self, isClockwise: bool):
         if isClockwise:
-            l.tx_pwm(self.h, ENA, FREQ, 45)
+            l.tx_pwm(self.h, ENA, FREQ, 75)
             l.gpio_write(self.h, IN1, 0)
             l.gpio_write(self.h, IN2, 1)
-            l.tx_pwm(self.h, ENB, FREQ, 45)
+            l.tx_pwm(self.h, ENB, FREQ, 75)
             l.gpio_write(self.h, IN3, 0)
             l.gpio_write(self.h, IN4, 1)
         else:
-            l.tx_pwm(self.h, ENA, FREQ, 45)
+            l.tx_pwm(self.h, ENA, FREQ, 75)
             l.gpio_write(self.h, IN1, 1)
             l.gpio_write(self.h, IN2, 0)
-            l.tx_pwm(self.h, ENB, FREQ, 45)
+            l.tx_pwm(self.h, ENB, FREQ, 75)
             l.gpio_write(self.h, IN3, 1)
             l.gpio_write(self.h, IN4, 0)
     
