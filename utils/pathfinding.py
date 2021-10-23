@@ -126,5 +126,3 @@ def generateFollowString (path):
             result += ""
 
     return result
-
-print(aStarPathfinding(matrix))
