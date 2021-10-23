@@ -94,7 +94,7 @@ class Robot:
     # environment. This is paired with an implementation of the A* pathfinding algorithm which returns its path
     # in this string format.
     def follow (self, programString):
-        spd = 0.01
+        spd = 0.1
 
         for i in range(len(programString)):
             if programString[i-1 if i > 0 else 0] != programString[i] or self.getBearing() != orientations[programString[i]]:
@@ -108,7 +108,7 @@ class Robot:
                 
             j = 1
             while programString[i] == programString[i+j]:
-                if i+j < len(programString):
+                if i+j < len(programString) - 1:
                     j += 1
                 else:
                     break
