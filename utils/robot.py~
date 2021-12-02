@@ -96,7 +96,8 @@ class Robot:
     def follow (self, programString):
         spd = 0.2
 
-        for i in range(len(programString)):
+        i = 0
+        while i < len(programString):
             if programString[i-1 if i > 0 else 0] != programString[i] or self.getBearing() != orientations[programString[i]]:
                 rotation = orientations[programString[i]] - self.getBearing()
                 if rotation < 0:
@@ -107,11 +108,8 @@ class Robot:
                 self.orientation += rotation
                 
             j = 1
-            while programString[i] == programString[i+j]:
-                if i+j < len(programString) - 1:
-                    j += 1
-                else:
-                    break
+            while i+j < len(programString) and programString[i] == programString[i+j]:
+                j += 1
             self.forward(1)
             time.sleep(j)
 

@@ -13,5 +13,8 @@ placeRobot(MAP_MATRIX, robot.x, robot.y)
 
 placeTarget(MAP_MATRIX, 0, 0)
 
-robot.follow("F")
-robot.stop()
+try:
+    while True:
+        robot.forward()
+except KeyboardInterrupt:
+    print("Program terminated")
