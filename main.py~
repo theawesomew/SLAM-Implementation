@@ -3,7 +3,7 @@ from utils.mapping import *
 from utils.pathfinding import *
 import time
 
-robot = Robot(0, 0, 0)
+robot = Robot(0, 0, 90)
 
 MAP_STRING = ""
 
