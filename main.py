@@ -15,6 +15,6 @@ placeTarget(MAP_MATRIX, 0, 0)
 
 try:
     while True:
-        robot.forward()
+        robot.forward(1)
 except KeyboardInterrupt:
     print("Program terminated")
