@@ -14,8 +14,7 @@ placeRobot(MAP_MATRIX, robot.x, robot.y)
 placeTarget(MAP_MATRIX, 0, 0)
 
 try:
-    robot.turn(True)
-    time.sleep(1)
+    robot.follow("R")
     robot.stop()
 except KeyboardInterrupt:
     robot.stop()

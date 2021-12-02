@@ -94,7 +94,7 @@ class Robot:
     # environment. This is paired with an implementation of the A* pathfinding algorithm which returns its path
     # in this string format.
     def follow (self, programString):
-        spd = 0.05
+        spd = (1/59.1)
 
         i = 0
         while i < len(programString):
