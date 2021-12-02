@@ -14,9 +14,8 @@ placeRobot(MAP_MATRIX, robot.x, robot.y)
 placeTarget(MAP_MATRIX, 0, 0)
 
 try:
-    while True:
-        robot.follow("F")
-        robot.stop()
+    robot.follow("F")
+    robot.stop()
 except KeyboardInterrupt:
     robot.stop()
     print("Program terminated")
