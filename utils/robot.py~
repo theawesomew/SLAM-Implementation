@@ -1,5 +1,6 @@
 import lgpio as l
 import time
+import math
 
 # F B L R
 orientations = {
@@ -94,12 +95,14 @@ class Robot:
     # environment. This is paired with an implementation of the A* pathfinding algorithm which returns its path
     # in this string format.
     def follow (self, programString):
-        spd = 0.05
+        spd = (1/(2*Math.degrees(Math.asin(9/18.25))))
 
         i = 0
         while i < len(programString):
             if programString[i-1 if i > 0 else 0] != programString[i] or self.getBearing() != orientations[programString[i]]:
                 rotation = orientations[programString[i]] - self.getBearing()
+                n = lambda r : r < 0
+                rotation = min(abs(rotation), 360-abs(rotation)) * (-n(rotation) if 360-abs(rotation) < abs(rotation) else n(rotation))
                 if rotation < 0:
                     self.turn(True)
                 else:
