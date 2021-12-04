@@ -4,22 +4,16 @@ from utils.pathfinding import *
 import time
 from flask import Flask, request
 
-app = Flask(__name__);
-
-robot = Robot(0, 0, 90)
+app = Flask(__name__)
 
 @app.route('/')
 def main ():
-	return '<!DOCTYPE html><html><head><meta charset="UTF-8"/><title></title><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"><script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script><script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script></head><body><div class="container-fluid"><div class="row"><a href="/drive">Drive To</a></div><div class="row"><a href="/door">Door Activation</a></div><div class="row"><a href="/video">Video Library</a></div></div></body></html>'
+    robot = Robot(0, 0, 90)
+	return ''
 
 @app.route('/drive')
 def drive ():
-	try:
-		robot.follow("FFFF")
-		robot.stop()
-	except KeyboardInterrupt:
-		robot.stop()
-		print("Program terminated")
+	return ''
 
 @app.route('/drive/<int:room>')
 def driveToRoom (room):
