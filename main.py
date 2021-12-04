@@ -2,20 +2,22 @@ from utils.robot import *
 from utils.mapping import *
 from utils.pathfinding import *
 import time
-from flask import Flask, request
+from flask import Flask, request, render_template
 
 app = Flask(__name__)
+robot = ''
 
 @app.route('/')
 def main ():
+    global robot
     robot = Robot(0, 0, 90)
-	return ''
+    return render_template('index.html')
 
 @app.route('/drive')
 def drive ():
-	return ''
+    return 'Currently driving'
 
-@app.route('/drive/<int:room>')
+@app.route('/drive/<int:room>', methods=["get"])
 def driveToRoom (room):
 	return ''
 

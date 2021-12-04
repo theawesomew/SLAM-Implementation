@@ -95,7 +95,7 @@ class Robot:
     # environment. This is paired with an implementation of the A* pathfinding algorithm which returns its path
     # in this string format.
     def follow (self, programString):
-        spd = (1/(2*degrees(asin(9/18.25))))
+        secondsPerDegree = (1/(2*degrees(asin(9/18.25))))
 
         i = 0
         while i < len(programString):
@@ -107,7 +107,7 @@ class Robot:
                     self.turn(True)
                 else:
                     self.turn(False)
-                time.sleep(abs(rotation) * spd)
+                time.sleep(abs(rotation) * secondsPerDegree)
                 self.orientation += rotation
                 
             j = 1
