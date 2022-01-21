@@ -1,0 +1,12 @@
+from utils.robot import *
+import lgpio as l
+
+robot = Robot(0,0,90)
+
+try:
+    while True:
+        robot.forward(1)
+except KeyboardInterrupt:
+    robot.stop()
+    print("Program terminated")
+

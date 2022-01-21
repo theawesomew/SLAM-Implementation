@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<title></title>
+		
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	</head>
+	<body>
+		<div class="container-fluid">
+			<div class="jumbotron text-center">
+				<h1>Please select a video from our catalogue</h1>
+			</div>
+			<div class="mx-auto d-block" style="width: 500px;">
+				<video width="500" controls>
+					<source src="{{ url_for('static', filename='Getting an MRI_ A Cartoon for Kids.mp4')  }}" type="video/mp4"/>
+				</video>	
+			</div>
+		</div>
+	</body>
+</html>

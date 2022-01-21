@@ -15,15 +15,28 @@ def main ():
 
 @app.route('/drive')
 def drive ():
-    return 'Currently driving'
+    return render_template('drive.html')
 
 @app.route('/drive/<int:room>', methods=["get"])
 def driveToRoom (room):
-	return ''
+    global robot
+    programString = ""
+
+    if room == 1:
+        programString = "F"*(1920//150+1) + "R"*(720//150+1)
+    elif room == 2:
+        programString = "F"*(400//80+1) + "R"*(1400//150+1)
+    else:
+        programString = "F"*(7340//150+1) + "R"*(1340//150+1)
+
+    robot.follow(programString)
+    robot.stop()
+
+    return ''
 
 @app.route('/video')
 def videoLibrary ():
-	return ''
+	return render_template("video.html")
 
 if __name__ == "__main__":
     app.run(debug=True)

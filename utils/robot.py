@@ -21,12 +21,18 @@ ENB = 22
 IN3 = 23
 IN4 = 24
 
+# control pins used for the servo
+SPIN = 25
+
 # frequency utilised by the PWM (pulse width modulation)
 FREQ = 10000
 
+# frequency utilised by the vast majority of servo PWM control
+SFREQ = 50
+
 class Robot:
 
-    # opening /dev/gpiochip0 to enable Linux's control of the Raspberry Pi's GPIO pins
+    # opening /sys/class/gpio/gpiochip0 to enable Linux's control of the Raspberry Pi's GPIO pins
     h = l.gpiochip_open(0)
 
     def __init__ (self, x, y, orientation):
@@ -41,6 +47,7 @@ class Robot:
         l.gpio_claim_output(self.h, ENB)
         l.gpio_claim_output(self.h, IN3)
         l.gpio_claim_output(self.h, IN4)
+        l.gpio_claim_output(self.h, SPIN)
     
     # This function instructs the robot to move forwards utilising the "power" value
     # The power value is asserted to be between 0 & 1
@@ -95,14 +102,12 @@ class Robot:
     # environment. This is paired with an implementation of the A* pathfinding algorithm which returns its path
     # in this string format.
     def follow (self, programString):
-        secondsPerDegree = (1/(2*degrees(asin(9/18.25))))
+        secondsPerDegree = (1/(2*degrees(asin(9/18.25))))*2.25
 
         i = 0
         while i < len(programString):
             if programString[i-1 if i > 0 else 0] != programString[i] or self.getBearing() != orientations[programString[i]]:
                 rotation = orientations[programString[i]] - self.getBearing()
-                n = lambda r : r < 0
-                rotation = min(abs(rotation), 360-abs(rotation)) * (-n(rotation) if 360-abs(rotation) < abs(rotation) else n(rotation))
                 if rotation < 0:
                     self.turn(True)
                 else:
@@ -127,6 +132,16 @@ class Robot:
             
             i += j
         
+    def resetDoor (self):
+        #l.tx_pwm(self.h, SPIN, SFREQ, 90)
+        l.gpio_write(self.h, SPIN, 1)
+
+
+    def openDoor (self):
+        l.tx_pwm(self.h, SPIN, SFREQ, 7.5)
+
+    def closedDoor (self):
+        l.tx_pwm(self.h, SPIN, SFREQ, 7.5)
 
     # returns the current position of the robot
     def getPosition (self):

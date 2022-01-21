@@ -3,6 +3,18 @@
 	<head>
 		<meta charset="UTF-8"/>
 		<title></title>
+
+		<style>
+			.button-container {
+				width: 60vw;
+			}
+			
+			button {
+				font-size: 20px !important;
+				font-weight: bold !important;
+				width: calc((60vw - 10px)/3);
+			}
+		</style>
 		
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
@@ -12,9 +24,14 @@
 	</head>
 	<body>
 		<div class="container-fluid">
-			<div class="row"><button class='btn btn-primary' onclick='window.location.href = "../drive"'>Drive</button></div>
-			<div class="row"></div>
-			<div class="row"></div>
+			<div class="jumbotron text-center">
+				<h1>Please select which operation you would like the robot to perform</h1>
+			</div>
+			<div class="button-container mx-auto d-block">
+				<button class="btn btn-primary" onclick="window.location.href='./drive'">Drive To</button>
+				<button class="btn btn-primary" onclick="window.location.href='./door'">Open Door</button>
+				<button class="btn btn-primary" onclick="window.location.href='./video'">Video Library</button>
+			</div>
 		</div>
 	</body>
 </html>
