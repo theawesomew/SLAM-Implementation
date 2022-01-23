@@ -1,4 +1,4 @@
-from utils.robot import *
+from utils.robot2 import *
 from utils.mapping import *
 from utils.pathfinding import *
 import time
