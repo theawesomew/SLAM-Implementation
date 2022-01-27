@@ -11,12 +11,7 @@ orientations = {
     "B": 270
 }
 
-ENATerminate = False
-ENBTerminate = False
-
 ENAPWM, ENBPWM = 0, 0
-
-PWMCalls = 0
 
 # control pins used for the left motor
 ENA = 17
@@ -66,6 +61,7 @@ class Robot:
     # The longer the duty cycle, the faster the motor spins
     def forward(self, power: float):
         assert (power <= 1 and power >= 0)
+        global ENAPWM, ENBPWM
         self.stopPWM(ENA)
         ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, power * 0.9))
         ENAPWM.start()
@@ -80,6 +76,7 @@ class Robot:
     # This utilises the same premise as the "forward()" function, however, reversing the direction of each motor
     def reverse(self, power: float):
         assert (power <= 1 and power >= 0)
+        global ENAPWM, ENBPWM
         self.stopPWM(ENA)
         ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, power * 0.9))
         ENAPWM.start()
@@ -94,6 +91,7 @@ class Robot:
     # This turn function instructs the robot the robot to turn with 50% of its full power
     # The boolean variable specifies if the robot is turning clockwise or counter-clockwise
     def turn (self, isClockwise: bool):
+        global ENAPWM, ENBPWM
         if isClockwise:
             self.stopPWM(ENA)
             ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, 0.75))
@@ -168,30 +166,21 @@ class Robot:
         
     def setPWM (self, pin, freq, duty):
         assert (freq <= 100)
-        global PWMCalls, ENATerminate, ENBTerminate
-        PWMCalls += 1
-        print(f'This process has been called {PWMCalls} time(s)')
-        
-        ENATerminate, ENBTerminate = False, False
-        
-        if pin == ENA:
-            while not ENATerminate:
-                self.setValue(pin, 1)
-                time.sleep(duty * 1/freq)
-                self.setValue(pin, 0)
-                time.sleep((1-duty) * 1/freq)
-        else:
-            while not ENBTerminate:
-                self.setValue(pin, 1)
-                time.sleep(duty * 1/freq)
-                self.setValue(pin, 0)
-                time.sleep((1-duty) * 1/freq)
+
+        while True:
+            self.setValue(pin, 1)
+            time.sleep(duty * 1/freq)
+            self.setValue(pin, 0)
+            time.sleep((1-duty) * 1/freq)
    
     def stopPWM (self, pin):
+        global ENAPWM, ENBPWM
         if pin == ENA:
-            ENATerminate = True
+            ENAPWM.terminate()
         else:
-            ENBTerminate = True
+            ENBPWM.terminate()
+
+        self.setValue(pin, 0)
                         
         
         
