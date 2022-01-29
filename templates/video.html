@@ -1,8 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 	<head>
 		<meta charset="UTF-8"/>
 		<title></title>
+
+		<style>
+			.button-container {
+				width: 60vw;
+			}
+			
+			button {
+				width: calc((60vw - 10px)/3);
+				height: auto;
+				font-size: 20px !important;
+				font-weight: bold !important;
+			}
+
+			.row {
+				padding: 10px 0px;
+				width: 80vw;
+				margin: 0;
+			}
+		</style>
 		
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
@@ -15,10 +34,12 @@
 			<div class="jumbotron text-center">
 				<h1>Please select a video from our catalogue</h1>
 			</div>
-			<div class="mx-auto d-block" style="width: 500px;">
-				<video width="500" controls>
-					<source src="{{ url_for('static', filename='Getting an MRI_ A Cartoon for Kids.mp4')  }}" type="video/mp4"/>
-				</video>	
+			<div class="button-container d-block mx-auto">
+				<div class="row">
+					<div class="col-sm-3">
+						<button class="btn btn-primary" onclick="window.location.href='/video/1'">Getting an MRI Video</button>
+					</div>
+				</div>
 			</div>
 		</div>
 	</body>
