@@ -38,5 +38,9 @@ def driveToRoom (room):
 def videoLibrary ():
 	return render_template("video.html")
 
+@app.route('/video/<int:videoID>', methods=["get"])
+def getVideo (videoID):
+    return render_template(f"video_{videoID}.html")
+
 if __name__ == "__main__":
     app.run(debug=True)

@@ -2,6 +2,7 @@ import gpiod as g
 import multiprocessing as m  
 import time
 from math import *
+from vision import *
 
 # F B L R
 orientations = {
@@ -11,7 +12,7 @@ orientations = {
     "B": 270
 }
 
-ENAPWM, ENBPWM = 0, 0
+ENAPWM, ENBPWM = m.Process(), m.Process()
 
 # control pins used for the left motor
 ENA = 17
@@ -44,6 +45,7 @@ class Robot:
         self.x = x
         self.y = y
         self.orientation = orientation
+        self.vision = Vision()
 
         # exports the GPIO pins so that they may be used for output
         self.h.get_line(ENA).request(CONFIG)
@@ -146,8 +148,15 @@ class Robot:
             j = 1
             while i+j < len(programString) and programString[i] == programString[i+j]:
                 j += 1
+            
             self.forward(1)
-            time.sleep(j)
+            startTime = time.time()
+            while time.time()-startTime <= j:
+                if self.vision.withinRange(0.1):
+                    self.stop()
+                    time.sleep(5)
+                else:
+                    self.forward(1)
 
             if programString[i] == "F":
                 self.y -= j
