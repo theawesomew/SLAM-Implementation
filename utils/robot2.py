@@ -46,8 +46,8 @@ class Robot:
         self.x = x
         self.y = y
         self.orientation = orientation
-        self.ENAPWM = m.Process(target=self.n, args=(10,))
-        self.ENBPWM = m.Process(target=self.n, args=(10,))
+        #self.ENAPWM = m.Process(target=self.n, args=(10,))
+        #self.ENBPWM = m.Process(target=self.n, args=(10,))
         #self.vision = Vision()
 
         # exports the GPIO pins so that they may be used for output
@@ -66,14 +66,16 @@ class Robot:
     # The longer the duty cycle, the faster the motor spins
     def forward(self, power: float):
         assert (power <= 1 and power >= 0)
-        self.stopPWM(ENA)
-        self.ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, power * 0.9))
-        self.ENAPWM.start()
+        #self.stopPWM(ENA)
+        #self.ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, power * 0.9))
+        #self.ENAPWM.start()
+        self.setValue(ENA, 1)
         self.setValue(IN1, 1)
         self.setValue(IN2, 0)
-        self.stopPWM(ENB)
-        self.ENBPWM = m.Process(target=self.setPWM, args=(ENB, FREQ, power * 0.9))
-        self.ENBPWM.start()
+        #self.stopPWM(ENB)
+        #self.ENBPWM = m.Process(target=self.setPWM, args=(ENB, FREQ, power * 0.9))
+        #self.ENBPWM.start()
+        self.setValue(ENB, 1)
         self.setValue(IN3, 0)
         self.setValue(IN4, 1)
     
@@ -81,14 +83,16 @@ class Robot:
     def reverse(self, power: float):
         assert (power <= 1 and power >= 0)
         global ENAPWM, ENBPWM
-        self.stopPWM(ENA)
-        self.ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, power * 0.9))
-        self.ENAPWM.start()
+        #self.stopPWM(ENA)
+        #self.ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, power * 0.9))
+        #self.ENAPWM.start()
+        self.setValue(ENA, 1)
         self.setValue(IN1, 0)
         self.setValue(IN2, 1)
-        self.stopPWM(ENB)
-        self.ENBPWM = m.Process(target=self.setPWM, args=(ENB, FREQ, power * 0.9))
-        self.ENBPWM.start()
+        #self.stopPWM(ENB)
+        #self.ENBPWM = m.Process(target=self.setPWM, args=(ENB, FREQ, power * 0.9))
+        #self.ENBPWM.start()
+        self.setValue(ENB, 1)
         self.setValue(IN3, 1)
         self.setValue(IN4, 0)
     
@@ -97,26 +101,30 @@ class Robot:
     def turn (self, isClockwise: bool):
         global ENAPWM, ENBPWM
         if isClockwise:
-            self.stopPWM(ENA)
-            self.ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, 0.75))
-            self.ENAPWM.start()
+            #self.stopPWM(ENA)
+            #self.ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, 0.75))
+            #self.ENAPWM.start()
+            self.setValue(ENA, 1)
             self.setValue(IN1, 0)
             self.setValue(IN2, 1)
-            self.stopPWM(ENB)
-            self.ENBPWM = m.Process(target=self.setPWM, args=(ENB, FREQ, 0.75))
-            self.ENBPWM.start()
+            #self.stopPWM(ENB)
+            #self.ENBPWM = m.Process(target=self.setPWM, args=(ENB, FREQ, 0.75))
+            #self.ENBPWM.start()
+            self.setValue(ENB, 1)
             self.setValue(IN3, 0)
             self.setValue(IN4, 1)
         else:
-            self.stopPWM(ENA)
-            self.stopPWM(ENA)
-            self.ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, 0.75))
-            self.ENAPWM.start()
+            #self.stopPWM(ENA)
+            #self.stopPWM(ENA)
+            #self.ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, 0.75))
+            #self.ENAPWM.start()
+            self.setValue(ENA, 1)
             self.setValue(IN1, 1)
             self.setValue(IN2, 0)
-            self.stopPWM(ENB)
-            self.ENBPWM = m.Process(target=self.setPWM, args=(ENB, FREQ, 0.75))
-            self.ENBPWM.start()
+            #self.stopPWM(ENB)
+            #self.ENBPWM = m.Process(target=self.setPWM, args=(ENB, FREQ, 0.75))
+            #self.ENBPWM.start()
+            self.setValue(ENB, 1)
             self.setValue(IN3, 1)
             self.setValue(IN4, 0)
     
@@ -126,8 +134,10 @@ class Robot:
         self.setValue(IN2, 0)
         self.setValue(IN3, 0)
         self.setValue(IN4, 0)
-        self.stopPWM(ENA)
-        self.stopPWM(ENB)
+        self.setValue(ENA, 0)
+        self.setValue(ENB, 0)
+        #self.stopPWM(ENA)
+        #self.stopPWM(ENB)
 
     # This utilises an encoded "programString" to direct the robot's movement using the key terms of
     # "FBLR" to stand for forward, back, left, & and right to dictate how the robot should move throught the
@@ -185,13 +195,13 @@ class Robot:
             self.setValue(pin, 0)
             time.sleep((1-duty) * 1/freq)
    
-    def stopPWM (self, pin):
-        if pin == ENA:
-            self.ENAPWM.terminate()
-        else:
-            self.ENBPWM.terminate()
+    #def stopPWM (self, pin):
+        #if pin == ENA:
+            #self.ENAPWM.terminate()
+        #else:
+            #self.ENBPWM.terminate()
 
-        self.setValue(pin, 0)
+        #self.setValue(pin, 0)
                         
         
         
