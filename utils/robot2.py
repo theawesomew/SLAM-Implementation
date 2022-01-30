@@ -39,15 +39,15 @@ class Robot:
     # opening /sys/class/gpio/gpiochip0 to enable Linux's control of the Raspberry Pi's GPIO pins
     h = g.chip(0)
 
-    def n (args):
+    def n (self, args):
         pass
 
     def __init__ (self, x, y, orientation):
         self.x = x
         self.y = y
         self.orientation = orientation
-        self.ENAPWM = m.Process(target=n, args=(10,))
-        self.ENBPWM = m.Process(target=n, args=(10,))
+        self.ENAPWM = m.Process(target=self.n, args=(10,))
+        self.ENBPWM = m.Process(target=self.n, args=(10,))
         #self.vision = Vision()
 
         # exports the GPIO pins so that they may be used for output
