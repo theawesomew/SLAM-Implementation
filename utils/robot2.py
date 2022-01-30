@@ -4,6 +4,9 @@ import time
 from math import *
 #from vision import *
 
+def n (arg):
+    pass
+
 # F B L R
 orientations = {
     "R": 0,
@@ -12,7 +15,7 @@ orientations = {
     "B": 270
 }
 
-ENAPWM, ENBPWM = m.Process(), m.Process()
+ENAPWM, ENBPWM = m.Process(target=n, args=(10,)), m.Process(target=n, args=(10,))
 
 # control pins used for the left motor
 ENA = 17
