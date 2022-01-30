@@ -4,9 +4,6 @@ import time
 from math import *
 #from vision import *
 
-def n (arg):
-    pass
-
 # F B L R
 orientations = {
     "R": 0,
@@ -14,8 +11,6 @@ orientations = {
     "L": 180,
     "B": 270
 }
-
-ENAPWM, ENBPWM = m.Process(target=n, args=(10,)), m.Process(target=n, args=(10,))
 
 # control pins used for the left motor
 ENA = 17
@@ -44,10 +39,15 @@ class Robot:
     # opening /sys/class/gpio/gpiochip0 to enable Linux's control of the Raspberry Pi's GPIO pins
     h = g.chip(0)
 
+    def n (args):
+        pass
+
     def __init__ (self, x, y, orientation):
         self.x = x
         self.y = y
         self.orientation = orientation
+        self.ENAPWM = m.Process(target=n, args=(10,))
+        self.ENBPWM = m.Process(target=n, args=(10,))
         #self.vision = Vision()
 
         # exports the GPIO pins so that they may be used for output
@@ -66,15 +66,14 @@ class Robot:
     # The longer the duty cycle, the faster the motor spins
     def forward(self, power: float):
         assert (power <= 1 and power >= 0)
-        global ENAPWM, ENBPWM
         self.stopPWM(ENA)
-        ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, power * 0.9))
-        ENAPWM.start()
+        self.ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, power * 0.9))
+        self.ENAPWM.start()
         self.setValue(IN1, 1)
         self.setValue(IN2, 0)
         self.stopPWM(ENB)
-        ENBPWM = m.Process(target=self.setPWM, args=(ENB, FREQ, power * 0.9))
-        ENBPWM.start()
+        self.ENBPWM = m.Process(target=self.setPWM, args=(ENB, FREQ, power * 0.9))
+        self.ENBPWM.start()
         self.setValue(IN3, 0)
         self.setValue(IN4, 1)
     
@@ -83,13 +82,13 @@ class Robot:
         assert (power <= 1 and power >= 0)
         global ENAPWM, ENBPWM
         self.stopPWM(ENA)
-        ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, power * 0.9))
-        ENAPWM.start()
+        self.ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, power * 0.9))
+        self.ENAPWM.start()
         self.setValue(IN1, 0)
         self.setValue(IN2, 1)
         self.stopPWM(ENB)
-        ENBPWM = m.Process(target=self.setPWM, args=(ENB, FREQ, power * 0.9))
-        ENBPWM.start()
+        self.ENBPWM = m.Process(target=self.setPWM, args=(ENB, FREQ, power * 0.9))
+        self.ENBPWM.start()
         self.setValue(IN3, 1)
         self.setValue(IN4, 0)
     
@@ -99,25 +98,25 @@ class Robot:
         global ENAPWM, ENBPWM
         if isClockwise:
             self.stopPWM(ENA)
-            ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, 0.75))
-            ENAPWM.start()
+            self.ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, 0.75))
+            self.ENAPWM.start()
             self.setValue(IN1, 0)
             self.setValue(IN2, 1)
             self.stopPWM(ENB)
-            ENBPWM = m.Process(target=self.setPWM, args=(ENB, FREQ, 0.75))
-            ENBPWM.start()
+            self.ENBPWM = m.Process(target=self.setPWM, args=(ENB, FREQ, 0.75))
+            self.ENBPWM.start()
             self.setValue(IN3, 0)
             self.setValue(IN4, 1)
         else:
             self.stopPWM(ENA)
             self.stopPWM(ENA)
-            ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, 0.75))
-            ENAPWM.start()
+            self.ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, 0.75))
+            self.ENAPWM.start()
             self.setValue(IN1, 1)
             self.setValue(IN2, 0)
             self.stopPWM(ENB)
-            ENBPWM = m.Process(target=self.setPWM, args=(ENB, FREQ, 0.75))
-            ENBPWM.start()
+            self.ENBPWM = m.Process(target=self.setPWM, args=(ENB, FREQ, 0.75))
+            self.ENBPWM.start()
             self.setValue(IN3, 1)
             self.setValue(IN4, 0)
     
@@ -187,11 +186,10 @@ class Robot:
             time.sleep((1-duty) * 1/freq)
    
     def stopPWM (self, pin):
-        global ENAPWM, ENBPWM
         if pin == ENA:
-            ENAPWM.terminate()
+            self.ENAPWM.terminate()
         else:
-            ENBPWM.terminate()
+            self.ENBPWM.terminate()
 
         self.setValue(pin, 0)
                         
