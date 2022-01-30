@@ -5,8 +5,9 @@ import time
 robot = Robot(0,0,90)
 
 try:
-    robot.forward(1)
-    time.sleep(1)
+    secondsPerDegree = (1/(2*degrees(asin(9/18.25))))*2.25
+    robot.turn(True)
+    time.sleep(secondsPerDegree * 90)
     robot.stop()
 except KeyboardInterrupt:
     robot.stop()
