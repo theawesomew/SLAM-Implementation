@@ -1,5 +1,5 @@
 #include <iostream>
-#include "/home/librealsense/include/librealsense2/rs.hpp"
+#include <librealsense2/rs.hpp>
 
 int main () {
 
