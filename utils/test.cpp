@@ -1,5 +1,5 @@
 #include <iostream>
-#include "C:/Program Files (x86)/Intel RealSense SDK 2.0/include/librealsense2/rs.hpp"
+#include "/home/librealsense/include/librealsense2/rs.hpp"
 
 int main () {
 
