@@ -62,7 +62,7 @@ class Robot:
         assert (power <= 1 and power >= 0)
         if self.ENAPWM.is_alive():
             self.stopPWM(ENA)
-        self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.9*power))
+        self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.8*power))
         self.ENAPWM.start()
         self.setValue(IN1, 1)
         self.setValue(IN2, 0)
