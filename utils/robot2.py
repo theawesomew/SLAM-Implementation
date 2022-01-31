@@ -1,8 +1,7 @@
 import gpiod as g
-import multiprocessing as m  
+from multiprocessing import Process 
 import time
 from math import *
-#from vision import *
 
 # F B L R
 orientations = {
@@ -39,17 +38,12 @@ class Robot:
     # opening /sys/class/gpio/gpiochip0 to enable Linux's control of the Raspberry Pi's GPIO pins
     h = g.chip(0)
 
-    def n (self, args):
-        pass
-
     def __init__ (self, x, y, orientation):
         self.x = x
         self.y = y
         self.orientation = orientation
-        #self.ENAPWM = m.Process(target=self.n, args=(10,))
-        #self.ENBPWM = m.Process(target=self.n, args=(10,))
-        #self.vision = Vision()
-
+        self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.9))
+        self.ENBPWM = Process(target=self.setPWM, args=(ENB, FREQ, 0.9))
         # exports the GPIO pins so that they may be used for output
         self.h.get_line(ENA).request(CONFIG)
         self.h.get_line(IN1).request(CONFIG)
@@ -66,65 +60,62 @@ class Robot:
     # The longer the duty cycle, the faster the motor spins
     def forward(self, power: float):
         assert (power <= 1 and power >= 0)
-        #self.stopPWM(ENA)
-        #self.ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, power * 0.9))
-        #self.ENAPWM.start()
-        self.setValue(ENA, 1)
+        if self.ENAPWM.is_alive():
+            self.stopPWM(ENA)
+        self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.9*power))
+        self.ENAPWM.start()
         self.setValue(IN1, 1)
         self.setValue(IN2, 0)
-        #self.stopPWM(ENB)
-        #self.ENBPWM = m.Process(target=self.setPWM, args=(ENB, FREQ, power * 0.9))
-        #self.ENBPWM.start()
-        self.setValue(ENB, 1)
+        if self.ENBPWM.is_alive():
+            self.stopPWM(ENB)
+        self.ENBPWM = Process(target=self.setPWM, args=(ENB, FREQ, 0.9*power))
+        self.ENBPWM.start()
         self.setValue(IN3, 0)
         self.setValue(IN4, 1)
     
     # This utilises the same premise as the "forward()" function, however, reversing the direction of each motor
     def reverse(self, power: float):
         assert (power <= 1 and power >= 0)
-        global ENAPWM, ENBPWM
-        #self.stopPWM(ENA)
-        #self.ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, power * 0.9))
-        #self.ENAPWM.start()
-        self.setValue(ENA, 1)
+        if self.ENAPWM.is_alive():
+            self.stopPWM(ENA)
+        self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.9*power))
+        self.ENAPWM.start()
         self.setValue(IN1, 0)
         self.setValue(IN2, 1)
-        #self.stopPWM(ENB)
-        #self.ENBPWM = m.Process(target=self.setPWM, args=(ENB, FREQ, power * 0.9))
-        #self.ENBPWM.start()
-        self.setValue(ENB, 1)
+        if self.ENBPWM.is_alive():
+            self.stopPWM(ENB)
+        self.ENBPWM = Process(target=self.setPWM, args=(ENB, FREQ, 0.9*power))
+        self.ENBPWM.start()
         self.setValue(IN3, 1)
         self.setValue(IN4, 0)
     
     # This turn function instructs the robot the robot to turn with 50% of its full power
     # The boolean variable specifies if the robot is turning clockwise or counter-clockwise
     def turn (self, isClockwise: bool):
-        global ENAPWM, ENBPWM
         if isClockwise:
-            #self.stopPWM(ENA)
-            #self.ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, 0.75))
-            #self.ENAPWM.start()
-            self.setValue(ENA, 1)
+            if self.ENAPWM.is_alive():
+                self.stopPWM(ENA)
+            self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.75))
+            self.ENAPWM.start()
             self.setValue(IN1, 0)
             self.setValue(IN2, 1)
-            #self.stopPWM(ENB)
-            #self.ENBPWM = m.Process(target=self.setPWM, args=(ENB, FREQ, 0.75))
-            #self.ENBPWM.start()
-            self.setValue(ENB, 1)
+            if self.ENBPWM.is_alive():
+                self.stopPWM(ENB)
+            self.ENBPWM = Process(target=self.setPWM, args=(ENB, FREQ, 0.75))
+            self.ENBPWM.start()
             self.setValue(IN3, 0)
             self.setValue(IN4, 1)
         else:
-            #self.stopPWM(ENA)
-            #self.stopPWM(ENA)
-            #self.ENAPWM = m.Process(target=self.setPWM, args=(ENA, FREQ, 0.75))
-            #self.ENAPWM.start()
-            self.setValue(ENA, 1)
+            if self.ENAPWM.is_alive():
+                self.stopPWM(ENA)
+            self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.75))
+            self.ENAPWM.start()
             self.setValue(IN1, 1)
             self.setValue(IN2, 0)
-            #self.stopPWM(ENB)
-            #self.ENBPWM = m.Process(target=self.setPWM, args=(ENB, FREQ, 0.75))
-            #self.ENBPWM.start()
-            self.setValue(ENB, 1)
+            if self.ENBPWM.is_alive():
+                self.stopPWM(ENB)
+            self.ENBPWM = Process(target=self.setPWM, args=(ENB, FREQ, 0.75))
+            self.ENBPWM.start()
             self.setValue(IN3, 1)
             self.setValue(IN4, 0)
     
@@ -134,17 +125,15 @@ class Robot:
         self.setValue(IN2, 0)
         self.setValue(IN3, 0)
         self.setValue(IN4, 0)
-        self.setValue(ENA, 0)
-        self.setValue(ENB, 0)
-        #self.stopPWM(ENA)
-        #self.stopPWM(ENB)
+        self.stopPWM(ENA)
+        self.stopPWM(ENB)
 
     # This utilises an encoded "programString" to direct the robot's movement using the key terms of
     # "FBLR" to stand for forward, back, left, & and right to dictate how the robot should move throught the
     # environment. This is paired with an implementation of the A* pathfinding algorithm which returns its path
     # in this string format.
     def follow (self, programString):
-        secondsPerDegree = (1/(2*degrees(asin(9/18.25))))*2.25
+        secondsPerDegree = (1/(2*degrees(asin(9/18.25))))
 
         i = 0
         while i < len(programString):
@@ -193,16 +182,15 @@ class Robot:
             self.setValue(pin, 1)
             time.sleep(duty * 1/freq)
             self.setValue(pin, 0)
-            time.sleep((1-duty) * 1/freq)
-   
-    #def stopPWM (self, pin):
-        #if pin == ENA:
-            #self.ENAPWM.terminate()
-        #else:
-            #self.ENBPWM.terminate()
+            time.sleep((1-duty) * 1/freq) 
 
-        #self.setValue(pin, 0)
-                        
+    def stopPWM (self, pin):
+        if pin == ENA:
+            self.ENAPWM.terminate()
+        else:
+            self.ENBPWM.terminate()
+
+        self.setValue(pin, 0)                    
         
         
     # returns the current position of the robot
@@ -212,4 +200,13 @@ class Robot:
     # returns the current bearing of the robot
     def getBearing (self):
         return self.orientation
+
+    def __getstate__ (self):
+        SELF_DICT = self.__dict__.copy()
+        del SELF_DICT['ENAPWM']
+        del SELF_DICT['ENBPWM']
+        return SELF_DICT
+
+    def __setstate__ (self, state):
+        self.__dict__.update(state)
 
