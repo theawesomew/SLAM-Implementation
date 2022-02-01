@@ -63,7 +63,7 @@ class Robot:
         assert (power <= 1 and power >= 0)
         if self.ENAPWM.is_alive():
             self.stopPWM(ENA)
-        self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.9*power))
+        self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.8*power))
         self.ENAPWM.start()
         self.setValue(IN1, 1)
         self.setValue(IN2, 0)
@@ -74,13 +74,13 @@ class Robot:
         self.setValue(IN3, 0)
         self.setValue(IN4, 1)
 
-    def leftWheel (self):
+    def rightWheel (self):
         self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.9))
         self.ENAPWM.start()
         self.setValue(IN1, 1)
         self.setValue(IN2, 0)
 
-    def rightWheel (self):
+    def leftWheel (self):
         self.ENBPWM = Process(target=self.setPWM, args=(ENB, FREQ, 0.9))
         self.ENBPWM.start()
         self.setValue(IN3, 0)
