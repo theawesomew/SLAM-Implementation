@@ -69,7 +69,7 @@ class Robot:
         self.setValue(IN2, 0)
         if self.ENBPWM.is_alive():
             self.stopPWM(ENB)
-        self.ENBPWM = Process(target=self.setPWM, args=(ENB, FREQ, 0.9*power))
+        self.ENBPWM = Process(target=self.setPWM, args=(ENB, FREQ, 0.8*power))
         self.ENBPWM.start()
         self.setValue(IN3, 0)
         self.setValue(IN4, 1)
