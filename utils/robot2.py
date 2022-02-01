@@ -61,18 +61,18 @@ class Robot:
     # The longer the duty cycle, the faster the motor spins
     def forward(self, power: float):
         assert (power <= 1 and power >= 0)
-        if self.ENAPWM.is_alive():
-            self.stopPWM(ENA)
-        self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.9*power))
-        self.ENAPWM.start()
-        self.setValue(IN1, 1)
-        self.setValue(IN2, 0)
         if self.ENBPWM.is_alive():
             self.stopPWM(ENB)
         self.ENBPWM = Process(target=self.setPWM, args=(ENB, FREQ, 0.8*power))
         self.ENBPWM.start()
         self.setValue(IN3, 0)
         self.setValue(IN4, 1)
+        if self.ENAPWM.is_alive():
+            self.stopPWM(ENA)
+        self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.9*power))
+        self.ENAPWM.start()
+        self.setValue(IN1, 1)
+        self.setValue(IN2, 0)
 
     def rightWheel (self):
         self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.9))
@@ -163,17 +163,7 @@ class Robot:
             while i+j < len(programString) and programString[i] == programString[i+j]:
                 j += 1
             
-            f = 0.8
-            for _ in range(4):
-                self.forward(f)
-                time.sleep(1)
-                f += 0.05
-                j -= 1
-                if f > 1:
-                    f = 1
-                if j == 0:
-                    break
-                
+            self.forward(1) 
             time.sleep(j)   
 
             if programString[i] == "F":
