@@ -6,6 +6,8 @@ from math import *
 robot = Robot(0,0,90)
 
 try:
-    robot.setServoPosition(0.5)
+    robot.leftWheel()
+    time.sleep(1)
+    robot.stop()
 except KeyboardInterrupt:
     robot.stop()
