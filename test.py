@@ -9,7 +9,7 @@ try:
     robot.setServoPosition(0.5)
     time.sleep(float(sys.argv[1]))
     robot.setServoPosition(0)
-    robot.setServoPosition(1)
+    robot.setServoPosition(-0.15)
     time.sleep(float(sys.argv[1]))
 except KeyboardInterrupt:
     robot.setServoPosition(0)
