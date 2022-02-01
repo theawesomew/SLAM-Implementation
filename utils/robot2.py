@@ -67,14 +67,14 @@ class Robot:
             self.stopPWM(ENB)
         self.ENBPWM = Process(target=self.setPWM, args=(ENB, FREQ, self.rightCorrection*power))
         self.ENBPWM.start()
-        self.setValue(IN3, 0)
-        self.setValue(IN4, 1)
+        self.setValue(IN3, 1)
+        self.setValue(IN4, 0)
         if self.ENAPWM.is_alive():
             self.stopPWM(ENA)
         self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, self.leftCorrection*power))
         self.ENAPWM.start()
-        self.setValue(IN1, 1)
-        self.setValue(IN2, 0)
+        self.setValue(IN1, 0)
+        self.setValue(IN2, 1)
 
     def rightWheel (self):
         self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.9))
