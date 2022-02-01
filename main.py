@@ -12,7 +12,7 @@ import sys
 
 app = Flask(__name__)
 robot = ''
-leftPower, rightPower = 0, 0
+leftPower, rightPower = 0.9, 0.9
 
 if len(sys.argv) > 1:
     for arg in sys.argv:
