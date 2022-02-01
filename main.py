@@ -23,11 +23,11 @@ def driveToRoom (room):
     programString = ""
 
     if room == 1:
-        programString = "F"*(1920//150+1) + "R"*(720//150+1)
+        programString = "F"*(1920//300+1) + "R"*(720//300+1)
     elif room == 2:
-        programString = "F"*(400//80+1) + "R"*(1400//150+1)
+        programString = "F"*(400//300+1) + "R"*(1400//300+1)
     else:
-        programString = "F"*(7340//150+1) + "R"*(1340//150+1)
+        programString = "F"*(7340//300+1) + "R"*(1340//300+1)
 
     robot.follow(programString)
     robot.stop()
