@@ -38,7 +38,7 @@ class Robot:
     # opening /sys/class/gpio/gpiochip0 to enable Linux's control of the Raspberry Pi's GPIO pins
     h = g.chip(0)
 
-    def __init__ (self, x, y, orientation, leftCorrection, rightCorrection):
+    def __init__ (self, x, y, orientation, leftCorrection=0.9, rightCorrection=0.9):
         self.x = x
         self.y = y
         self.orientation = orientation
@@ -95,32 +95,19 @@ class Robot:
             self.stopPWM(ENA)
         self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, self.rightCorrection*power))
         self.ENAPWM.start()
-        self.setValue(IN1, 0)
-        self.setValue(IN2, 1)
+        self.setValue(IN1, 1)
+        self.setValue(IN2, 0)
         if self.ENBPWM.is_alive():
             self.stopPWM(ENB)
         self.ENBPWM = Process(target=self.setPWM, args=(ENB, FREQ, self.leftCorrection*power))
         self.ENBPWM.start()
-        self.setValue(IN3, 1)
-        self.setValue(IN4, 0)
+        self.setValue(IN3, 0)
+        self.setValue(IN4, 1)
     
     # This turn function instructs the robot the robot to turn with 50% of its full power
     # The boolean variable specifies if the robot is turning clockwise or counter-clockwise
     def turn (self, isClockwise: bool):
         if isClockwise:
-            if self.ENAPWM.is_alive():
-                self.stopPWM(ENA)
-            self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.75))
-            self.ENAPWM.start()
-            self.setValue(IN1, 0)
-            self.setValue(IN2, 1)
-            if self.ENBPWM.is_alive():
-                self.stopPWM(ENB)
-            self.ENBPWM = Process(target=self.setPWM, args=(ENB, FREQ, 0.75))
-            self.ENBPWM.start()
-            self.setValue(IN3, 0)
-            self.setValue(IN4, 1)
-        else:
             if self.ENAPWM.is_alive():
                 self.stopPWM(ENA)
             self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.75))
@@ -133,6 +120,19 @@ class Robot:
             self.ENBPWM.start()
             self.setValue(IN3, 1)
             self.setValue(IN4, 0)
+        else:
+            if self.ENAPWM.is_alive():
+                self.stopPWM(ENA)
+            self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.75))
+            self.ENAPWM.start()
+            self.setValue(IN1, 0)
+            self.setValue(IN2, 1)
+            if self.ENBPWM.is_alive():
+                self.stopPWM(ENB)
+            self.ENBPWM = Process(target=self.setPWM, args=(ENB, FREQ, 0.75))
+            self.ENBPWM.start()
+            self.setValue(IN3, 0)
+            self.setValue(IN4, 1)
     
     # causes the robot to stop
     def stop (self):
@@ -205,7 +205,7 @@ class Robot:
     # servos have duty cycles that range from 1ms - 2ms at 50 Hz
     # so duty cycles of 0.05-0.1 in this context
     def setServoPosition (self, position):
-        assert (position >= 0 and position <= 1)
+        #assert (position >= 0 and position <= 1)
 
         if self.SERVOPWM.is_alive():
             self.SERVOPWM.terminate()
