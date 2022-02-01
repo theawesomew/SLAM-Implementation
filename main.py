@@ -40,8 +40,14 @@ def driveToRoom (room):
         programString = "F"*(1920//300+1) + "R"*(720//300+1)
     elif room == 2:
         programString = "F"*(400//300+1) + "R"*(1400//300+1)
-    else:
+    elif room == 3:
         programString = "F"*(7340//300+1) + "R"*(1340//300+1)
+    elif room == 4:
+        programString = "FR"
+    else:
+        programString = ""
+        robot.turn(True)
+        time.sleep(5)
 
     robot.follow(programString)
     robot.stop()
