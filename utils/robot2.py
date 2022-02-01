@@ -210,7 +210,7 @@ class Robot:
         if self.SERVOPWM.is_alive():
             self.SERVOPWM.terminate()
         
-        self.SERVOPWM = Process(self.setPWM, args=(SPIN, SFREQ, (position+1)*0.05))
+        self.SERVOPWM = Process(target=self.setPWM, args=(SPIN, SFREQ, (position+1)*0.05))
         self.SERVOPWM.start()
         
         
