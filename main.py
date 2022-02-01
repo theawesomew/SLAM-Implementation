@@ -17,9 +17,9 @@ leftPower, rightPower = 0, 0
 if len(sys.argv) > 1:
     for arg in sys.argv:
         if arg.startswith("L") or arg.startswith("l"):
-            leftPower = float(arg[1:])
+            leftPower = float(arg[1:]/100)
         elif arg.startswith("R") or arg.startswith("r"):
-            rightPower = float(arg[1:])
+            rightPower = float(arg[1:]/100)
 
 @app.route('/')
 def main ():
