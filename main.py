@@ -44,6 +44,8 @@ def driveToRoom (room):
         programString = "F"*(7340//300+1) + "R"*(1340//300+1)
     elif room == 4:
         programString = "FR"
+    elif room == 6:
+        programString = "FF"
     else:
         programString = ""
         robot.turn(True)
