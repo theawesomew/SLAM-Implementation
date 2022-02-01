@@ -219,6 +219,7 @@ class Robot:
         SELF_DICT = self.__dict__.copy()
         del SELF_DICT['ENAPWM']
         del SELF_DICT['ENBPWM']
+        del SELF_DICT['SERVOPWM']
         return SELF_DICT
 
     def __setstate__ (self, state):
