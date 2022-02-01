@@ -63,7 +63,7 @@ class Robot:
         assert (power <= 1 and power >= 0)
         if self.ENAPWM.is_alive():
             self.stopPWM(ENA)
-        self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.8*power))
+        self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.9*power))
         self.ENAPWM.start()
         self.setValue(IN1, 1)
         self.setValue(IN2, 0)
@@ -163,15 +163,18 @@ class Robot:
             while i+j < len(programString) and programString[i] == programString[i+j]:
                 j += 1
             
-            self.forward(1)
-            #startTime = time.time()
-            #while time.time()-startTime <= j:
-                #if self.vision.withinRange(0.1):
-                    #self.stop()
-                    #time.sleep(5)
-                #else:
-                    #self.forward(1)
-            time.sleep(j)
+            f = 0.8
+            for _ in range(4):
+                self.forward(f)
+                time.sleep(1)
+                f += 0.05
+                j -= 1
+                if f > 1:
+                    f = 1
+                if j == 0:
+                    break
+                
+            time.sleep(j)   
 
             if programString[i] == "F":
                 self.y -= j
