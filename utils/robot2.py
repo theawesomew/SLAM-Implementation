@@ -44,6 +44,7 @@ class Robot:
         self.orientation = orientation
         self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.9))
         self.ENBPWM = Process(target=self.setPWM, args=(ENB, FREQ, 0.9))
+        self.SERVOPWM = Process(target=self.setPWM, args=(SPIN, SFREQ, 0.075))
         # exports the GPIO pins so that they may be used for output
         self.h.get_line(ENA).request(CONFIG)
         self.h.get_line(IN1).request(CONFIG)
@@ -190,7 +191,20 @@ class Robot:
         else:
             self.ENBPWM.terminate()
 
-        self.setValue(pin, 0)                    
+        self.setValue(pin, 0)    
+
+
+    # servos typically have their centre position at 1.5 ms duty cycle at 50 Hz
+    # servos have duty cycles that range from 1ms - 2ms at 50 Hz
+    # so duty cycles of 0.05-0.1 in this context
+    def setServoPosition (self, position):
+        assert (position >= 0 and position <= 1)
+
+        if self.SERVOPWM.is_alive():
+            self.SERVOPWM.terminate()
+        
+        self.SERVOPWM = Process(self.setPWM, args=(SPIN, SFREQ, (position+1)*0.05))
+        self.SERVOPWM.start()
         
         
     # returns the current position of the robot

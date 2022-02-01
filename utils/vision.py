@@ -1,23 +1,14 @@
-from json.encoder import INFINITY
-import pyrealsense2 as rs
+import subprocess
 
 class Vision:
 
-    def __init__ (self):
-        self.pipeline = rs.pipeline()
-        self.pipeline.start()
+    def __init__ (self, executablePath):
+        self.exec = executablePath
 
-    def withinRange (self, range):
-        frame = self.pipeline.wait_for_frames()
-        width, height = frame.get_width(), frame.get_height()
-        depth = frame.get_depth_frame()
+    def get_distance (self):
+        distance = subprocess.run(f'./{self.exec}', capture_output=True)
+        return float(distance.stdout.decode('utf-8'))
 
-        minDistance = INFINITY
-        for x in range(width):
-            for y in range(height):
-                minDistance = min(depth.get_distance(x,y), minDistance)
-
-        if minDistance <= range:
-            return True
-        else:
-            return False
+if __name__ == "__main__":
+    v = Vision('a')
+    print(v.get_distance())
