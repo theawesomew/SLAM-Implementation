@@ -38,10 +38,12 @@ class Robot:
     # opening /sys/class/gpio/gpiochip0 to enable Linux's control of the Raspberry Pi's GPIO pins
     h = g.chip(0)
 
-    def __init__ (self, x, y, orientation):
+    def __init__ (self, x, y, orientation, leftCorrection, rightCorrection):
         self.x = x
         self.y = y
         self.orientation = orientation
+        self.leftCorrection = leftCorrection
+        self.rightCorrection = rightCorrection
         self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.9))
         self.ENBPWM = Process(target=self.setPWM, args=(ENB, FREQ, 0.9))
         self.SERVOPWM = Process(target=self.setPWM, args=(SPIN, SFREQ, 0.075))
@@ -63,13 +65,13 @@ class Robot:
         assert (power <= 1 and power >= 0)
         if self.ENBPWM.is_alive():
             self.stopPWM(ENB)
-        self.ENBPWM = Process(target=self.setPWM, args=(ENB, FREQ, 0.8*power))
+        self.ENBPWM = Process(target=self.setPWM, args=(ENB, FREQ, self.rightCorrection*power))
         self.ENBPWM.start()
         self.setValue(IN3, 0)
         self.setValue(IN4, 1)
         if self.ENAPWM.is_alive():
             self.stopPWM(ENA)
-        self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.9*power))
+        self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, self.leftCorrection*power))
         self.ENAPWM.start()
         self.setValue(IN1, 1)
         self.setValue(IN2, 0)
@@ -91,13 +93,13 @@ class Robot:
         assert (power <= 1 and power >= 0)
         if self.ENAPWM.is_alive():
             self.stopPWM(ENA)
-        self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, 0.9*power))
+        self.ENAPWM = Process(target=self.setPWM, args=(ENA, FREQ, self.rightCorrection*power))
         self.ENAPWM.start()
         self.setValue(IN1, 0)
         self.setValue(IN2, 1)
         if self.ENBPWM.is_alive():
             self.stopPWM(ENB)
-        self.ENBPWM = Process(target=self.setPWM, args=(ENB, FREQ, 0.9*power))
+        self.ENBPWM = Process(target=self.setPWM, args=(ENB, FREQ, self.leftCorrection*power))
         self.ENBPWM.start()
         self.setValue(IN3, 1)
         self.setValue(IN4, 0)
