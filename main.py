@@ -13,6 +13,7 @@ import sys
 app = Flask(__name__)
 robot = ''
 leftPower, rightPower = 0.9, 0.9
+door_closed = False
 
 if len(sys.argv) > 1:
     for arg in sys.argv:
@@ -30,6 +31,20 @@ def main ():
 @app.route('/drive')
 def drive ():
     return render_template('drive.html')
+
+@app.route('/door')
+def door ():
+    global door_closed
+    if not door_closed:
+        robot.setServoPosition(0.5)
+        time.sleep(3)
+        door_closed = True
+    else:
+        robot.setServoPosition(-0.05)
+        time.sleep(3)
+        door_closed = False
+
+    return ""
 
 @app.route('/drive/<int:room>', methods=["get"])
 def driveToRoom (room):
